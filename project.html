@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Portfolio - Bharathraj.K</title>
+    <!-- Orbitron font for robotic style -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+        /* Matrix canvas styling */
+        #matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1; /* behind everything */
+            width: 100vw;
+            height: 100vh;
+            background-color: #000; /* black background */
+            display: block;
+        }
+
+        /* Body & general styles */
+        body {
+            font-family: 'Orbitron', monospace;
+            margin: 0;
+            padding: 0;
+            color: #0f0; /* bright green text */
+            background-color: transparent; /* transparent to show canvas bg */
+        }
+
+        /* Header content with solid background block */
+        .header-content-background {
+            background-color: rgba(0, 51, 0, 0.9); /* dark green transparent block */
+            padding: 2rem 2rem 2rem 240px; /* leave space for big image */
+            position: relative;
+            border-radius: 10px;
+            max-width: 900px;
+            margin: 2rem auto 1rem auto;
+            color: #0f0;
+            box-shadow: 0 0 15px #0f0;
+            border: 2px solid #0f0; /* green border */
+        }
+
+        /* Profile Picture - bigger size */
+        .profile-picture {
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #0f0; /* green border */
+            background-color: #003300;
+            z-index: 4;
+            box-shadow: 0 0 20px #0f0;
+        }
+
+        .header-text {
+            position: relative;
+            z-index: 3;
+        }
+
+        /* Robotic glowing green name */
+        .header-text h1 {
+            color: #0f0; /* bright green */
+            font-weight: 700;
+            text-shadow:
+                0 0 5px #0f0,
+                0 0 10px #0f0,
+                0 0 20px #0f0,
+                0 0 40px #00ff00;
+            margin: 0 0 10px 0;
+            font-size: 3rem;
+        }
+
+        /* Subtitle */
+        .header-text p {
+            font-size: 1.2rem;
+            margin: 0;
+            color: #0f0;
+            font-weight: 600;
+        }
+
+        nav {
+            background-color: rgba(0, 51, 0, 0.9);
+            color: #0f0;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #0f0;
+            border: 2px solid #0f0; /* green border */
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #0f0;
+            font-weight: 600;
+            transition: color 0.3s;
+            font-size: 1.1rem;
+        }
+
+        nav ul li a:hover {
+            color: #84e984; /* lighter green on hover */
+            text-decoration: underline;
+        }
+
+        .section-content {
+            background-color: rgba(0, 51, 0, 0.85);
+            padding: 2rem;
+            margin: 1rem auto;
+            border-radius: 20px;
+            box-shadow: 0 0 15px #0f0;
+            max-width: 800px;
+            color: #0f0;
+            text-align: justify;
+            border: 2px solid #0f0; /* green border */
+        }
+
+        .download-button {
+            background-color: #003300;
+            color: #0f0;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 10px;
+            align-self: center;
+            transition: background-color 0.3s, color 0.3s;
+            font-weight: 700;
+            border: 2px solid #0f0;
+        }
+
+        .download-button:hover {
+            background-color: #0f0;
+            color: #003300;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem 0;
+            background-color: rgba(0, 51, 0, 0.9);
+            color: #0f0;
+            backdrop-filter: blur(5px);
+            max-width: 900px;
+            margin: 2rem auto 1rem auto;
+            border-radius: 10px;
+            box-shadow: 0 0 15px #0f0;
+            border: 2px solid #0f0;
+            font-weight: 600;
+        }
+
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            color: #0f0;
+        }
+
+        /* Responsive */
+        @media screen and (max-width: 600px) {
+            .profile-picture {
+                position: static;
+                display: block;
+                margin: 0 auto 10px;
+                transform: none;
+                width: 140px;
+                height: 140px;
+                border: 2px solid #0f0;
+            }
+
+            .header-content-background {
+                padding: 2rem 1rem 2rem 1rem;
+                max-width: 100%;
+                margin: 1rem;
+                border: 2px solid #0f0;
+            }
+
+            nav {
+                max-width: 100%;
+                margin: 1rem 0;
+                border-radius: 0;
+                border: 2px solid #0f0;
+            }
+
+            footer {
+                max-width: 100%;
+                margin: 1rem 0;
+                border-radius: 0;
+                border: 2px solid #0f0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix background canvas -->
+    <canvas id="matrix"></canvas>
+
+    <header>
+        <div class="header-content-background">
+            <img src="unnamed.jpg" alt="Profile Picture" class="profile-picture" />
+            <div class="header-text">
+                <h1>Bharathraj.K</h1>
+                <p>Am Cyber Security Engineer</p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#resume">Resume</a></li>
+        </ul>
+    </nav>
+
+    <section id="about">
+        <div class="section-content">
+            <h2>About Me</h2>
+            <p>I'm a <b>Hethical Hacker</b> expert who is passionate about creating dynamic and user-friendly websites. 
+                I'm driven by the desire to craft high-performance web applications that enhance user experience and provide
+                seamless digital solutions. With over 7 years of experience in the field, I'm dedicated to staying up to date 
+                with the latest trends and innovations in the 
+                web development landscape. I'm also committed to helping others learn more about web technologies, 
+                best practices, and how to build secure and scalable websites.</p>
+        </div>
+    </section>
+
+    <section id="education">
+        <div class="section-content">
+            <h2>Education</h2>
+            <p>Mahendra Engineering College</p>
+        </div>
+    </section>
+
+    <section id="skills">
+        <div class="section-content">
+            <h2>Skills</h2>
+            <ul>
+                <li>Red Hat</li>
+                <li>MERN</li>
+                <li>Cloud Computing</li>
+                <li>Python</li>
+                <li>Spring</li>
+                <li>ML & AI</li>
+                <li>Java</li>
+                <li>C++</li>
+                <li>JavaScript</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="projects">
+        <div class="section-content">
+            <h2>Projects</h2>
+            <ul>
+                <li><a href="#" style="color:#84e984;">E Cart website</a></li>
+                <li><a href="#" style="color:#84e984;">Cloud Security IBM</a></li>
+                <li><a href="#" style="color:#84e984;">IBM chatbot</a></li>
+                <li><a href="#" style="color:#84e984;">College Portal</a></li> 
+            </ul>
+        </div>
+    </section>
+
+    <section id="resume">
+        <div class="section-content" style="text-align: center;">
+            <h2>Resume</h2>
+            <a href="file.pdf" target="_blank" class="download-button">Download CV</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Bharathraj.K</p>
+    </footer>
+
+    <script>
+        // Smooth scrolling for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Matrix digital rain effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const characters = '0123456789';
+        const charsArray = characters.split('');
+        const fontSize = 16;
+        let columns = Math.floor(canvas.width / fontSize);
+
+        let drops = [];
+        for(let x = 0; x < columns; x++) {
+            drops[x] = Math.floor(Math.random() * canvas.height / fontSize);
+        }
+
+        function draw() {
+            // translucent BG to create fade effect
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0F0'; // bright green text
+            ctx.font = fontSize + 'px Orbitron, monospace';
+
+            for(let i = 0; i < drops.length; i++) {
+                const text = charsArray[Math.floor(Math.random() * charsArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                drops[i]++;
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+            }
+        }
+
+        setInterval(draw, 50);
+    </script>
+</body>
+</html>
+
+
